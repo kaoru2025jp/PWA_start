@@ -38,9 +38,16 @@ function calc() {
   const O1 = parseFloat(document.getElementById("O1").value);
   const O2 = parseFloat(document.getElementById("O2").value);
 
-  const T = (S - B + O1 + O2).toFixed(2);
+  // 新しい方程式
+  const T1 = (B - S) / O1;
+  const T2 = (B - S) / O2;
+
+  // 表示用（例：合計 or 平均など用途に応じて）
+  const T = (T1 + T2).toFixed(2);
+
   document.getElementById("result").textContent = T;
 
+  
   const callbackName = "cb_" + Date.now();
   window[callbackName] = function(res) {
     delete window[callbackName];
