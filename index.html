@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>計算書</title>
+
+<style>
+body {
+  font-family: sans-serif;
+  padding: 20px;
+}
+input, button {
+  margin: 6px 0;
+  width: 100%;
+  max-width: 300px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>計算書</h2>
+
+S:  <input id="S"  type="number"><br>
+B:  <input id="B"  type="number"><br>
+O1: <input id="O1" type="number"><br>
+O2: <input id="O2" type="number"><br>
+
+<button onclick="calc()">計算して送信</button>
+
+<p>結果 T = <span id="result"></span></p>
+
+<script>
+const GAS_URL = "https://script.google.com/macros/s/AKfycbxDTQ9Zao5jNI9nfQHi9SUUeT6obI4_8elKAmfgeGr1cg7qlS6tuayMxVoNdcNXh2--OA/exec";
+
+function calc() {
+  const S  = parseFloat(document.getElementById("S").value);
+  const B  = parseFloat(document.getElementById("B").value);
+  const O1 = parseFloat(document.getElementById("O1").value);
+  const O2 = parseFloat(document.getElementById("O2").value);
+
+  const T = (S - B + O1 + O2).toFixed(2);
+  document.getElementById("result").textContent = T;
+
+  const callbackName = "cb_" + Date.now();
+  window[callbackName] = function(res) {
+    delete window[callbackName];
+  };
+
+  const script = document.createElement("script");
+  script.src =
+    GAS_URL +
+    "?t=" + encodeURIComponent(T) +
+    "&callback=" + callbackName;
+
+  document.body.appendChild(script);
+}
+</script>
+
+</body>
+</html>
